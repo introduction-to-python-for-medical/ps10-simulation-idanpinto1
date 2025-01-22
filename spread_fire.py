@@ -26,20 +26,16 @@ def spread_fire(grid):
     """Update the forest grid based on fire spreading rules."""
     grid_size = len(grid)
     update_grid = copy.deepcopy(grid)
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
+
     for i in range(grid_size):
         for j in range(grid_size):
-            if grid[i][j] == 1:
-                neighbors = []
-                if i > 0:
-                    neighbors.append(grid[i-1][j])  # Top neighbor
-                if i < grid_size - 1:
-                    neighbors.append(grid[i+1][j])  # Bottom neighbor
-                if j > 0:
-                    neighbors.append(grid[i][j-1])  # Left neighbor
-                if j < grid_size - 1:
-                    neighbors.append(grid[i][j+1])  # Right neighbor
-                if 2 in neighbors:
-                    update_grid[i][j] = 2
+            if grid[i][j] == 1:  # Tree present
+                for di, dj in directions:
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < grid_size and 0 <= nj < grid_size and grid[ni][nj] == 2:
+                        update_grid[i][j] = 2
+                        break
 
     return update_grid
 
@@ -61,5 +57,4 @@ for i in range(100):
     display(fig)
     clear_output(wait=True)
     plt.pause(0.01)
-
 
